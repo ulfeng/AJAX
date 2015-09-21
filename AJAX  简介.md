@@ -53,7 +53,39 @@ xmlhttp.open("Get","ajax_info.txt",true);
 ```javascript
 xmlhttp.send();
 ```
-
+#### GET 还是 POST?
+        与POST相比，GET更简单也更快，并且在大部分情况下都能用。
+        然而，在以下情况下，请使用POST请求：
+        1、无法使用缓存文件(更新服务器上的文件或者数据库)；
+        2、向服务器发送大量数据(POST没有数据量限制)；
+        3、发送包含未知字符的用户输入时，POST比GET更稳定也更可靠。
+######　GET请求：
+```ajax
+xmlhttp.open("GET","demo_get.html",true);
+xmlhttp.send();
+```
+        上面的例子中，可能得到的是缓存的结果，为了避免这种情况，在URL添加一个唯一的ID:
+```ajax
+xmlhttp.open("GEt","demo_get.html?t=" + Math.random(),true);
+xmlhttp.send();
+```
+        通过GET方法发送信息，如
+```ajax
+xmlhttp.open("GET","demo_get.html?fname=sunlifeng&age=45",true);
+xmlhttp.open();
+```
+######　POST请求
+````ajax
+xmlhttp.open("POST","demo.html",true);
+xmlhttp.send();
+```
+        如果需要像HTML表单那样POST数据，请使用setRequestHeader()来添加HTTP头。然后在send()方法中规定希望发送的数据：
+        setRequestHeader(header,value); 向请求中添加HTTP头，header 规定头的名称，value 规定头的值
+```ajax
+xmlhttp.open("POST","demo.html",true);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlthttp.send("name=SunLifeng&age=30");
+```
 
 
 
