@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <style>
+        * {
+            margin:8px;
+        }
+    </style>
+    <script>
+        //1、Get请求参数在URL中显示，Post方式，则不会显示出来
+        //2、Ge请求发送数据量小，Post请求，发送数据量大
+        //3、Get请求需注意缓存的问题，Post请求不需担心这个问题
+        //4、Post请求必须设置Content-Type值为application/x-form-www-urlencoded
+
+
+        //get方法
+        function btn_get_click() {
+            var xmlHttp = window.XMLHttpRequest ?
+                new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+            var username = document.getElementById("txt_username").value;
+            var age = document.getElementById("txt_age").value;
+
+            //添加参数，以求每次访问不同的url,以避免缓存问题
+            xmlHttp.open("get", "Server.aspx?username=" + encodeURIComponent(username) +
+                "&age=" + encodeURIComponent(age) + "&random=" + Math.random());
+
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    document.getElementById("result").innerHTML = xmlHttp.responseText;
+                }
+            }
+
+            //发送请求，参数为null
+            xmlHttp.send(null);
+        }
+        
+        //post方法
+        function btn_post_click() {
+            var xmlHttp = window.XMLHttpRequest ?
+                new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+            var username = document.getElementById("txt_username").value;
+            var age = document.getElementById("txt_age").value;
+
+            var data = "username=" + encodeURIComponent(username) + "&age=" + encodeURIComponent(age);
+
+            //不用担心缓存问题
+            xmlHttp.open("post", "Server.aspx", true);
+
+            //必须设置否则，服务器端收不到信息
+            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    document.getElementById("result").innerHTML = xmlHttp.responseText;
+                }
+            }
+
+            //发送请求，要data数据
+            xmlHttp.send(data);
+        }
+      
+    </script>
+</head>
+<body>
+    <p><label for="txt_username">姓名：</label><input type="text" id="txt_username" /></p>
+    <p><label for="txt_age">年龄：</label><input type="text" id="txt_age" /></p>
+    <p><input type="button" value="GET" id="btn_get" onclick="btn_get_click()" /></p>
+    <p><input type="button" value="POST" id="btn_post" onclick="btn_post_click()" /></p>
+    <div id="result"></div>
+</body>
+</html>
