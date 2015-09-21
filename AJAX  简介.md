@@ -60,33 +60,72 @@ xmlhttp.send();
         2、向服务器发送大量数据(POST没有数据量限制)；
         3、发送包含未知字符的用户输入时，POST比GET更稳定也更可靠。
 ######　GET请求：
-```ajax
+```javascript
 xmlhttp.open("GET","demo_get.html",true);
 xmlhttp.send();
 ```
         上面的例子中，可能得到的是缓存的结果，为了避免这种情况，在URL添加一个唯一的ID:
-```ajax
+```javascript
 xmlhttp.open("GEt","demo_get.html?t=" + Math.random(),true);
 xmlhttp.send();
 ```
         通过GET方法发送信息，如
-```ajax
+```javascript
 xmlhttp.open("GET","demo_get.html?fname=sunlifeng&age=45",true);
 xmlhttp.open();
 ```
 ######　POST请求
-````ajax
+````javascript
 xmlhttp.open("POST","demo.html",true);
 xmlhttp.send();
 ```
         如果需要像HTML表单那样POST数据，请使用setRequestHeader()来添加HTTP头。然后在send()方法中规定希望发送的数据：
         setRequestHeader(header,value); 向请求中添加HTTP头，header 规定头的名称，value 规定头的值
-```ajax
+```javascript
 xmlhttp.open("POST","demo.html",true);
 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xmlthttp.send("name=SunLifeng&age=30");
 ```
-
+#### url - 服务器上的文件
+        open()方法的url参数是服务器上文件的地址：
+```javascript
+xmlhttp.open("GET","ajax_test.html",true);
+```
+该文件可以是任何类型的文件，比如.txt和.xml，或者服务器脚本文件，比如.asp和.php(在传回响应之前，能够在服务器上执行任务)。
+#### 异步 - True or False?
+        AJAX 指的是异步JavaScript和XML(Asynchronous Javascript and XML)。
+        XMLHttpRequest对象如果要用于AJAX的话，其open()方法的async餐宿必须设置为true;
+```javascript
+xmlhttp.open("GET","aiax_test.html",true);
+```
+        对于web开发人员来说，发送异步请求是一个巨大的进步。很多在服务器执行的任务都非常费时。AJAX出现之前这会引起应用程序挂起或停止。
+        通过AJAX，JavaScript无需等待服务器的响应，而是：
+        1、在等待服务器响应时执行其他脚本；
+        2、当响应就绪后对相应进行处理。
+#### Async=true
+        当使用async=true时，请规定在响应处于onreadystatechange事件中的就绪状态时执行的函数：
+```javascript
+xmlhttp.onreaderstatechange=function(){
+    if(xmlhttp.readyState==4 && xmlhttp.status==200){
+    document.getElementById("demo").innerHTML=xmlhttp.responseText;
+    }
+}
+xmlhttp.open("GET","ajax_info.txt",true);
+xmlhttp.send();
+```
+#### Async=false
+        如需使用 async=false，请将 open() 方法中的第三个参数改为 false：
+```javascript
+xmlhttp.open(&quot;GET&quot;,&quot;test1.txt&quot;,false);
+```
+        我们不推荐使用 async=false，但是对于一些小型的请求，也是可以的。
+请记住，JavaScript 会等到服务器响应就绪才继续执行。如果服务器繁忙或缓慢，应用程序会挂起或停止。
+注意：当您使用 async=false 时，请不要编写 onreadystatechange 函数 - 把代码放到 send() 语句后面即可：
+```javascript
+xmlhttp.open("GET","ajax_info.txt",false);
+xmlhttp.send();
+document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+```
 
 
 
