@@ -99,7 +99,9 @@ xmlhttp.open("GET","ajax_test.html",true);
 xmlhttp.open("GET","aiax_test.html",true);
 ```
         对于web开发人员来说，发送异步请求是一个巨大的进步。很多在服务器执行的任务都非常费时。AJAX出现之前这会引起应用程序挂起或停止。
-        通过AJAX，JavaScript无需等待服务器的响应，而是：1、在等待服务器响应时执行其他脚本；2、当响应就绪后对相应进行处理。
+通过AJAX，JavaScript无需等待服务器的响应，而是：
+    1、在等待服务器响应时执行其他脚本；
+    2、当响应就绪后对相应进行处理。
 #### Async=true
         当使用async=true时，请规定在响应处于onreadystatechange事件中的就绪状态时执行的函数：
 ```javascript
@@ -124,6 +126,93 @@ xmlhttp.open("GET","ajax_info.txt",false);
 xmlhttp.send();
 document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
 ```
+
+#### AJAX - 服务器响应
+    如需获得来自服务器的响应，请使用XMLHttpRequest对象的responseText或responseXML属性。responseText：获得字符串形式的响应数据；responseXML：获得XML形式的响应数据。
+    请求demo_xml.xml,并解析响应：
+```javascript
+function loadXMLDoc2() {
+    var xmlhttp;
+    var txt, x, i;
+    if (window.XMLHttpRequest) {  // code for IE7+，Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {  // code for IE5,IE6
+        xml = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            xmlDoc = xmlhttp.responseXML;
+            txt = "";
+            x = xmlDoc.getElementsByTagName("ARTIST");
+            for (i = 0; i < x.length; i++) {
+                txt = txt + x[i].childNodes[0].nodeValue + "<br>";
+            }
+            document.getElementById("demo").innerHTML = txt;
+        }
+    }
+    xml.open("GET", "demo_xml.xml", true);
+    xmlhttp.send();
+
+}
+```
+#### AJAX - onreadystatechange 事件
+    当请求被发送到服务器时，我们需要执行一些基于响应的任务。每当readyState改变时，就会触发onreadystatechange事件。readyState属性存有XMLHttpRequest的状态信息，三个重要的属性：
+    onreadystatechange:存储函数(或函数名)，每当readyState属性改变时，就会调用该函数。
+    readyState：存有XMLHttpRequest的状态。从0-4发生变化。0：请求未初始化；1：服务器连接已建立；2：请求已被接收；3：请求处理中；4：请求已经完成，且响应已就绪。
+    status:200:"OK";404:未找到页面。
+    d当readyState等于4且状态为200时，表示响应已就绪：
+```javascript
+xmlhttp.onreadystatechange=function(){
+    if(xmlhttp.readyState==4 && xmlhttp.status==200){
+    document.getElementById("demo").innerHTML=xmlhttp.responseText;
+    }
+}
+```
+####　使用 Callback函数
+    callback函数是一种以参数形式传递给另另一个函数的函数。如果存在多个AJAX函数，并为每个AJAX任务调用该函数。该函数调用应该包含URL以及发生onreadystatechange事件时执行的任务(每次调用可能不尽相同)：
+```javascript
+var xmlhttp;
+function loadXMLDoc(url, cfunc) {
+    if (window.XMLHttpRequest) {   // code for IE7+，Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {  // code for IE5,IE6
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = cfunc;
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+function myFunction() {
+    loadXMLDoc("ajax_info.txt", function () {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            // do someting code
+        }
+    })
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
