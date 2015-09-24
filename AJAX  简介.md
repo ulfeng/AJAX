@@ -99,9 +99,7 @@ xmlhttp.open("GET","ajax_test.html",true);
 xmlhttp.open("GET","aiax_test.html",true);
 ```
         对于web开发人员来说，发送异步请求是一个巨大的进步。很多在服务器执行的任务都非常费时。AJAX出现之前这会引起应用程序挂起或停止。
-        通过AJAX，JavaScript无需等待服务器的响应，而是：
-        1、在等待服务器响应时执行其他脚本；
-        2、当响应就绪后对相应进行处理。
+        通过AJAX，JavaScript无需等待服务器的响应，而是：1、在等待服务器响应时执行其他脚本；2、当响应就绪后对相应进行处理。
 #### Async=true
         当使用async=true时，请规定在响应处于onreadystatechange事件中的就绪状态时执行的函数：
 ```javascript
